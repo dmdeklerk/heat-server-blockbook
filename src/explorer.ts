@@ -12,7 +12,7 @@ import { ModuleProvider } from 'heat-server-common/dist/types/module_provider.in
 /* ------------------- Configuration Start ------------------- */
 
 // Must provide an id for this explorer
-const ID = "heat"
+const ID = "blockbook"
 
 // Must list all exposed/implemented modules 
 const modules: ModuleProvider = {
