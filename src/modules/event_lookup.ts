@@ -104,14 +104,6 @@ export async function eventLookup(context: CallContext, param: EventLookupParam)
 /**
  * Builds a Request object
  * https://eth1.trezor.io/api/v2/address/0xebb948075bc344a6e3ccc6fe91ac8b933aef1018?details=txs&page=1&pageSize=10&filter=1
- * @param logger
- * @param blockchain
- * @param assetType
- * @param assetId
- * @param addrXpub
- * @param from
- * @param to
- * @param minimal
  */
 async function eventsLookupReq(
   context: CallContext,
@@ -150,11 +142,6 @@ async function eventsLookupReq(
 /**
  * Returns the filter index needed for history events lookup API in blockbook.
  * Applies to 'ethereum type' coins.
- * @param context
- * @param blockchain
- * @param assetType
- * @param assetId
- * @param addrXpub
  */
 async function getFilterIndexForContract(
   context: CallContext,
@@ -191,6 +178,7 @@ async function getFilterIndexForContract(
 
 /**
  * Extracts an array of EventData objects from a single transaction
+ * @param context
  * @param txData
  * @param addrXpub
  * @param originalAddrXpub
@@ -331,9 +319,6 @@ async function getEventsFromTransaction(
 
 /**
  * On returned events we make sure
- * @param address
- * @param ourAddrXpub
- * @param originalAddrXpub
  */
 function replaceAddrXpubWithOriginalAddrXpub(
   address: string,
