@@ -1,21 +1,20 @@
 import * as chai from 'chai';
 const { isObject, isNumber, isString, isArray } = chai.assert
 import 'mocha';
-import { createContext } from './test_config'
+import { createContext, ltcConfig, BLOCKBOOK_LTC_GETADDRESS } from './test_config'
 import { utxoLookup } from '../src/modules/utxo_lookup';
 import { Blockchains, AssetTypes } from 'heat-server-common';
 
 describe('Utxo Lookup', () => {
   it('should work', async () => {
-    const blockchain: Blockchains = Blockchains.ETHEREUM
+    const blockchain: Blockchains = Blockchains.LITECOIN
     const assetType: AssetTypes = AssetTypes.NATIVE
-    const assetId: string = '0x1234'
-    const addrXpub: string = '0x5678'
-
-    let resp = await utxoLookup(createContext('Utxo'), {
+    const assetId: string = '0'
+    const addrXpub: string = 'LTftqUCs7KF7d3iu9QfNU7u2Fc3bxtr6Ug'
+    const context = createContext('Utxo', { getAddress: BLOCKBOOK_LTC_GETADDRESS }, ltcConfig)
+    const resp = await utxoLookup(context, {
       blockchain, assetType, assetId, addrXpub,
     })
-    //console.log('response', resp)
     isObject(resp)
     let result = resp.value
     isArray(result)
@@ -25,7 +24,7 @@ describe('Utxo Lookup', () => {
       isString(utxo.txid)
       isNumber(utxo.vout)
       isNumber(utxo.confirmations)
-      isNumber(utxo.lockTime)
+      if (utxo.lockTime) isNumber(utxo.lockTime)
       isNumber(utxo.height)
     }
   });
