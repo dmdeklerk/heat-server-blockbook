@@ -1,20 +1,28 @@
-import { NetworkFeeParam, NetworkFeeResult, tryParse, CallContext, ModuleResponse } from 'heat-server-common'
+import { NetworkFeeParam, NetworkFeeResult, tryParse, CallContext, ModuleResponse, BlockchainConfig } from 'heat-server-common'
+import { isUndefined } from 'lodash'
 
 export async function networkFee(context: CallContext, param: NetworkFeeParam): Promise<ModuleResponse<NetworkFeeResult>> {
   try {
-    const { req, protocol, host, logger } = context
-    const url = `${protocol}://${host}/api/GET-NETWORK-FEE`;
+    const { req, protocol, host, logger, middleWare } = context
+    const { blockchain } = param
+    const { feeBlocks } = BlockchainConfig[blockchain];
+    const url = `${protocol}://${host}/api/v2/estimatefee/${feeBlocks}?conservative=true`;
     const json = await req.get(url);
     const data = tryParse(json, logger);
 
-    const gasPriceWei: string = '0';
-    const satByte: string = '0';
-
+    if (!data || isUndefined(data.result)) {
+      return {
+        error: 'Invalid api response',
+      };
+    }
+    const value = middleWare.getNetworkFee(data.result);
+    if (!value) {
+      return {
+        error: `Middleware invalid network fee ${data.result}`,
+      };
+    }
     return {
-      value: {
-        gasPriceWei,
-        satByte,
-      },
+      value,
     };
   } catch (e) {
     return {

@@ -1,18 +1,33 @@
 import * as chai from 'chai';
-const { isObject, isTrue, isNumber, isString } = chai.assert
+const { isObject, isString } = chai.assert
 import 'mocha';
-import { isUndefined } from 'lodash'
-import { createContext } from './test_config'
+import { createContext, ltcConfig, ethConfig, BLOCKBOOK_UTXO_NETWORK_FEE, BLOCKBOOK_ETH_NETWORK_FEE } from './test_config'
 import { networkFee } from '../src/modules/network_fee';
+import { Blockchains } from 'heat-server-common';
+
 
 describe('Network Fee', () => {
-  it('should work', async () => {
-    let resp = await networkFee(createContext('Fee'), {})
+
+  /// Litecoin
+  it('should work for litecoin', async () => {
+    const context = createContext('Fee', { getNetworkFee: BLOCKBOOK_UTXO_NETWORK_FEE }, ltcConfig)
+    const resp = await networkFee(context, { blockchain: Blockchains.LITECOIN })
     //console.log('response', resp)
     isObject(resp)
     let result = resp.value
     isObject(result)
-    if (!isUndefined(result.gasPriceWei)) isString(result.gasPriceWei)
-    if (!isUndefined(result.satByte)) isString(result.satByte)
+    isString(result.satByte)
   });
+
+  /// Ethereum
+  it('should work for ethereum', async () => {
+    const context = createContext('Fee', { getNetworkFee: BLOCKBOOK_ETH_NETWORK_FEE }, ethConfig)
+    const resp = await networkFee(context, { blockchain: Blockchains.ETHEREUM })
+    //console.log('response', resp)
+    isObject(resp)
+    let result = resp.value
+    isObject(result)
+    isString(result.gasPriceWei)
+  });
+
 });

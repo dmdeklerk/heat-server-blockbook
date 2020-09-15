@@ -1,26 +1,31 @@
 {
   "name": "heat-plugin-sdk",
   "version": "1.0.0",
-  "description": "Bootstraps server plugin for heat wallet app",
+  "description": "Heat server plugin for blockbook",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist/*",
     "prepublish": "npm run clean && tsc",
-    "test": "mocha -r ts-node/register test/*.test.ts"
+    "test": "mocha -r ts-node/register test/*.test.ts",
+    "test-one": "mocha -r ts-node/register "
   },
   "author": "me",
   "license": "ISC",
   "devDependencies": {
+    "@types/big.js": "^4.0.5",
+    "@types/bitcoinjs-lib": "^5.0.0",
     "@types/chai": "^4.2.12",
-    "@types/mocha": "^8.0.3",
     "@types/lodash": "^4.14.161",
+    "@types/mocha": "^8.0.3",
+    "bitcoinjs-lib": "^5.2.0",
     "chai": "^4.2.0",
     "mocha": "^8.1.3",
+    "rimraf": "^3.0.2",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.2",
-    "rimraf": "^3.0.2"
+    "typescript": "^4.0.2"
   },
   "dependencies": {
+    "big.js": "^5.2.2",
     "heat-server-common": "heatcrypto/heat-server-common#master",
     "lodash": "^4.17.20",
     "reflect-metadata": "^0.1.13",
