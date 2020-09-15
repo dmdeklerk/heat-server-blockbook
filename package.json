@@ -1,5 +1,5 @@
 {
-  "name": "heat-plugin-sdk",
+  "name": "heat-server-blockbook",
   "version": "1.0.0",
   "description": "Heat server plugin for blockbook",
   "main": "dist/index.js",
