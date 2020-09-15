@@ -5,6 +5,17 @@ Blockbook plugin for Heat Server indexer.
 - [Heat Server Plugin SDK](https://github.com/heatcrypto/heat-server-sdk)
 - [Trezor Blockbook Blockchain Indexer](https://github.com/trezor/blockbook)
 
+## Clone, Install, Run tests
+
+Before cloning, installing depencies and running tests make sure you have installed: git, nodejs 10+ and npm.
+
+```bash
+$ git clone https://github.com/dmdeklerk/heat-server-blockbook.git
+$ cd heat-server-blockbook
+$ npm install
+$ npm run test
+```
+
 ## Supported coins
 
 Copied from https://github.com/trezor/blockbook/blob/master/docs/ports.md, below lists the available ports and blockchains.
