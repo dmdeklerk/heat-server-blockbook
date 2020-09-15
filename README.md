@@ -2,8 +2,8 @@
 
 Blockbook plugin for Heat Server indexer.
 
-https://github.com/heatcrypto/heat-server-sdk
-https://github.com/trezor/blockbook
+- [Heat Server Plugin SDK](https://github.com/heatcrypto/heat-server-sdk)
+- [Trezor Blockbook Blockchain Indexer](https://github.com/trezor/blockbook)
 
 ## Supported coins
 
