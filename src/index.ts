@@ -1,5 +1,6 @@
 import Big from 'big.js';
 import { address as bitcoinAddress } from 'bitcoinjs-lib';
+import { toCashAddress } from 'bchaddrjs';
 
 export * from './explorer'
 
@@ -33,6 +34,17 @@ export const BLOCKBOOK_LTC_GETADDRESS = function(address) {
     let decoded = bitcoinAddress.fromBase58Check(address);
     let version = decoded['version'];
     return bitcoinAddress.toBase58Check(decoded['hash'], version);
+  } catch (err) {
+    console.error(err);
+  }
+  return address;
+};
+
+// Blockbook BCH server
+export const BLOCKBOOK_BCH_SERVER = function(address) {
+  // https://github.com/bitcoincashjs/bchaddrjs/#translate-address-from-any-address-format-into-a-specific-format
+  try {
+    return toCashAddress(address);
   } catch (err) {
     console.error(err);
   }
