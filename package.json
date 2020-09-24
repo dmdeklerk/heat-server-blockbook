@@ -25,12 +25,12 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {
+    "bchaddrjs": "^0.4.5",
     "big.js": "^5.2.2",
+    "bitcoinjs-lib": "^5.2.0",
     "heat-server-common": "heatcrypto/heat-server-common#master",
     "lodash": "^4.17.20",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^6.6.2",
-    "bchaddrjs": "^0.4.5",
-    "bitcoinjs-lib": "^5.2.0"
+    "rxjs": "^6.6.2"
   }
 }
