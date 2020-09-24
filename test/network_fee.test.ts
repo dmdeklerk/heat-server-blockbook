@@ -1,10 +1,10 @@
 import * as chai from 'chai';
 const { isObject, isString } = chai.assert
 import 'mocha';
-import { createContext, ltcConfig, ethConfig, BLOCKBOOK_UTXO_NETWORK_FEE, BLOCKBOOK_ETH_NETWORK_FEE } from './test_config'
+import { createContext, ltcConfig, ethConfig } from './test_config'
 import { networkFee } from '../src/modules/network_fee';
 import { Blockchains } from 'heat-server-common';
-
+import { BLOCKBOOK_UTXO_NETWORK_FEE, BLOCKBOOK_ETH_NETWORK_FEE } from '../src/index';
 
 describe('Network Fee', () => {
 

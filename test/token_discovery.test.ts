@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-const { isObject, isTrue, isNumber, isString, isArray, isBoolean } = chai.assert
+const { isObject, isNumber, isString, isArray, isBoolean } = chai.assert
 import 'mocha';
 import { createContext, ltcConfig, ethConfig } from './test_config'
 import { tokenDiscovery } from '../src/modules/token_discovery';

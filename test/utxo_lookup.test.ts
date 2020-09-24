@@ -1,9 +1,10 @@
 import * as chai from 'chai';
 const { isObject, isNumber, isString, isArray } = chai.assert
 import 'mocha';
-import { createContext, ltcConfig, BLOCKBOOK_LTC_GETADDRESS } from './test_config'
+import { createContext, ltcConfig } from './test_config'
 import { utxoLookup } from '../src/modules/utxo_lookup';
 import { Blockchains, AssetTypes } from 'heat-server-common';
+import { BLOCKBOOK_LTC_GETADDRESS } from '../src/index'
 
 describe('Utxo Lookup', () => {
   it('should work', async () => {

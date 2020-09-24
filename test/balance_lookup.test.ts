@@ -1,9 +1,10 @@
 import * as chai from 'chai';
 const { isObject, isBoolean, isString } = chai.assert
 import 'mocha';
-import { createContext, ltcConfig, BLOCKBOOK_LTC_GETADDRESS, ethConfig } from './test_config'
+import { createContext, ltcConfig, ethConfig } from './test_config'
 import { balanceLookup } from '../src/modules/balance_lookup';
 import { Blockchains, AssetTypes } from 'heat-server-common';
+import { BLOCKBOOK_LTC_GETADDRESS } from '../src/index'
 
 describe('Balance Lookup', () => {
   

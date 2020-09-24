@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-const { isObject, isTrue, isNumber, isString, isArray, isBoolean } = chai.assert
+const { isObject, isNumber, isString, isArray } = chai.assert
 import 'mocha';
 import { createContext, ethConfig, ltcConfig, isNonEmptyArrayOfUniqueStrings } from './test_config'
 import { eventLookup } from '../src/modules/event_lookup';
