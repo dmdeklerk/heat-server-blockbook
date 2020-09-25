@@ -6,7 +6,7 @@ const lodash_1 = require("lodash");
 const token_discovery_1 = require("./token_discovery");
 async function eventLookup(context, param) {
     try {
-        const { req, protocol, host, logger, middleWare } = context;
+        const { logger, middleWare } = context;
         const { blockchain, assetType, assetId, addrXpub, from, to, minimal } = param;
         const addrXpub_ = middleWare && lodash_1.isFunction(middleWare.getAddress)
             ? await middleWare.getAddress(addrXpub)

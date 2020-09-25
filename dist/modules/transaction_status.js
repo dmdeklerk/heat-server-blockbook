@@ -6,7 +6,7 @@ const lodash_1 = require("lodash");
 async function transactionStatus(context, param) {
     try {
         const { req, protocol, host, logger } = context;
-        const { blockchain, assetType, addrXpub, transactionId } = param;
+        const { transactionId } = param;
         const url = `${protocol}://${host}/api/v2/tx/${transactionId}`;
         const json = await req.get(url, {}, [200, 400]);
         const transaction = heat_server_common_1.tryParse(json, logger);

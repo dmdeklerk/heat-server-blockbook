@@ -1,10 +1,14 @@
 import { TokenDiscoveryParam, TokenDiscoveryResult, tryParse, CallContext, ModuleResponse, AssetTypes } from 'heat-server-common'
+import { isFunction } from 'lodash';
 
 export async function tokenDiscovery(context: CallContext, param: TokenDiscoveryParam): Promise<ModuleResponse<Array<TokenDiscoveryResult>>> {
   try {
-    const { req, protocol, host, logger } = context
+    const { req, protocol, host, logger, middleWare } = context
     const { addrXpub } = param
-    const url = `${protocol}://${host}/api/v2/address/${addrXpub}?details=tokenBalances`;
+    const addrXpub_ = middleWare && isFunction(middleWare.getAddress)
+      ? await middleWare.getAddress(addrXpub)
+      : addrXpub;    
+    const url = `${protocol}://${host}/api/v2/address/${addrXpub_}?details=tokenBalances`;
     const json = await req.get(url);
     const data = tryParse(json, logger);
     if (!data.balance && !data.tokens) {

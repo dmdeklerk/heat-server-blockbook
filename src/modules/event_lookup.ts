@@ -1,11 +1,10 @@
 import { EventLookupParam, EventLookupResult, EventLookupEvent, tryParse, SourceTypes, CallContext, ModuleResponse, Blockchains, AssetTypes, MonitoredRequest, prettyPrint, compareCaseInsensitive, buildEventSend, buildEventReceive, buildEventInput, buildEventOutput, buildEventFee, createEventData } from 'heat-server-common'
-import { LoggerService } from '@nestjs/common';
 import { isString, isFunction, isNumber } from 'lodash';
 import { tokenDiscovery } from './token_discovery'
 
 export async function eventLookup(context: CallContext, param: EventLookupParam): Promise<ModuleResponse<Array<EventLookupResult>>> {
   try {
-    const { req, protocol, host, logger, middleWare } = context
+    const { logger, middleWare } = context
     const { blockchain, assetType, assetId, addrXpub, from, to, minimal } = param
     const addrXpub_ =
       middleWare && isFunction(middleWare.getAddress)

@@ -6,8 +6,8 @@ const lodash_1 = require("lodash");
 async function utxoLookup(context, param) {
     try {
         const { req, protocol, host, logger, middleWare } = context;
-        const { addrXpub, assetType } = param;
-        const addrXpub_ = this.middleWare && lodash_1.isFunction(middleWare.getAddress)
+        const { addrXpub } = param;
+        const addrXpub_ = middleWare && lodash_1.isFunction(middleWare.getAddress)
             ? await middleWare.getAddress(addrXpub)
             : addrXpub;
         const url = `${protocol}://${host}/api/v2/utxo/${addrXpub_}`;

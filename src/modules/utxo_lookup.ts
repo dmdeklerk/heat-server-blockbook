@@ -4,8 +4,8 @@ import { isFunction } from 'lodash';
 export async function utxoLookup(context: CallContext, param: UtxoLookupParam): Promise<ModuleResponse<Array<UtxoLookupResult>>> {
   try {
     const { req, protocol, host, logger, middleWare } = context
-    const { addrXpub, assetType } = param
-    const addrXpub_ = this.middleWare && isFunction(middleWare.getAddress)
+    const { addrXpub } = param
+    const addrXpub_ = middleWare && isFunction(middleWare.getAddress)
       ? await middleWare.getAddress(addrXpub)
       : addrXpub;
     const url = `${protocol}://${host}/api/v2/utxo/${addrXpub_}`;

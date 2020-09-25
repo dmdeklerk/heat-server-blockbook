@@ -2,11 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tokenDiscovery = void 0;
 const heat_server_common_1 = require("heat-server-common");
+const lodash_1 = require("lodash");
 async function tokenDiscovery(context, param) {
     try {
-        const { req, protocol, host, logger } = context;
+        const { req, protocol, host, logger, middleWare } = context;
         const { addrXpub } = param;
-        const url = `${protocol}://${host}/api/v2/address/${addrXpub}?details=tokenBalances`;
+        const addrXpub_ = middleWare && lodash_1.isFunction(middleWare.getAddress)
+            ? await middleWare.getAddress(addrXpub)
+            : addrXpub;
+        const url = `${protocol}://${host}/api/v2/address/${addrXpub_}?details=tokenBalances`;
         const json = await req.get(url);
         const data = heat_server_common_1.tryParse(json, logger);
         if (!data.balance && !data.tokens) {
