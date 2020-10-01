@@ -3,6 +3,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.tokenDiscovery = void 0;
 const heat_server_common_1 = require("heat-server-common");
 const lodash_1 = require("lodash");
+class TokenDiscoveryResultEx {
+    constructor(parentResult) {
+        this.assetId = parentResult.assetId;
+        this.assetType = parentResult.assetType;
+        this.value = parentResult.value;
+        this.exists = parentResult.exists;
+    }
+}
+function nativeEtherDetails(transfers) {
+    return {
+        contract: '0',
+        decimals: 18,
+        name: 'Ether',
+        symbol: 'ETH',
+        transfers,
+        type: ''
+    };
+}
 async function tokenDiscovery(context, param) {
     try {
         const { req, protocol, host, logger, middleWare } = context;
@@ -25,6 +43,7 @@ async function tokenDiscovery(context, param) {
             assetType: heat_server_common_1.AssetTypes.NATIVE,
             value: data.balance || '0',
             exists,
+            details: nativeEtherDetails(data.nonTokenTxs)
         });
         if (data.tokens) {
             data.tokens.forEach(entry => {
@@ -33,6 +52,14 @@ async function tokenDiscovery(context, param) {
                     assetType: heat_server_common_1.AssetTypes.TOKEN_TYPE_1,
                     value: entry.balance || '0',
                     exists,
+                    details: {
+                        contract: entry.contract,
+                        decimals: entry.decimals || 0,
+                        name: entry.name || '',
+                        symbol: entry.symbol || '',
+                        transfers: entry.transfers || 0,
+                        type: entry.type || ''
+                    }
                 });
             });
         }
