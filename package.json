@@ -1,6 +1,6 @@
 {
   "name": "heat-server-blockbook",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Heat server plugin for blockbook",
   "main": "dist/index.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "bchaddrjs": "^0.4.5",
     "big.js": "^5.2.2",
     "bitcoinjs-lib": "^5.2.0",
-    "heat-server-common": "heatcrypto/heat-server-common#master",
+    "heat-server-common": "heatcrypto/heat-server-common#abfd0842bad4745afd9c086cfcc93e43f422e559",
     "lodash": "^4.17.20",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.6.2"
