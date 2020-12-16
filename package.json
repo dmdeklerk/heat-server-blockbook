@@ -1,6 +1,6 @@
 {
   "name": "heat-server-blockbook",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Heat server plugin for blockbook",
   "main": "dist/index.js",
   "scripts": {
