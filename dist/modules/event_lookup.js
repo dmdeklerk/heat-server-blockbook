@@ -4,6 +4,7 @@ exports.eventLookup = void 0;
 const heat_server_common_1 = require("heat-server-common");
 const lodash_1 = require("lodash");
 const token_discovery_1 = require("./token_discovery");
+const blockchains_1 = require("../blockchains");
 async function eventLookup(context, param) {
     try {
         const { logger, middleWare } = context;
@@ -34,7 +35,7 @@ async function eventLookup(context, param) {
             if (data.transactions) {
                 for (let i = 0; i < data.transactions.length; i++) {
                     let txData = data.transactions[i];
-                    let events = await getEventsFromTransaction(context, txData, addrXpub_, addrXpub);
+                    let events = await getEventsFromTransaction(blockchain, context, txData, addrXpub_, addrXpub);
                     events.forEach(event => {
                         event.data = heat_server_common_1.createEventData(event);
                     });
@@ -111,7 +112,7 @@ async function getFilterIndexForContract(context, blockchain, assetType, assetId
     })}`);
     throw new Error('Could not determine filter index');
 }
-async function getEventsFromTransaction(context, txData, addrXpub, originalAddrXpub) {
+async function getEventsFromTransaction(blockchain, context, txData, addrXpub, originalAddrXpub) {
     const { logger } = context;
     try {
         const vin = txData.vin || [];
@@ -120,49 +121,51 @@ async function getEventsFromTransaction(context, txData, addrXpub, originalAddrX
         const value = txData.value || '0';
         const fees = txData.fees || '0';
         const events = [];
-        const isAccountBased = vin[0] && !lodash_1.isString(vin[0].hex);
+        const isAccountBased = !blockchains_1.isUtxo(blockchain);
         if (isAccountBased) {
-            vin.forEach(input => {
+            for (const input of vin) {
                 if (heat_server_common_1.compareCaseInsensitive(input.addresses && input.addresses[0], addrXpub) &&
                     value != '0') {
                     const address = vout[0].addresses ? vout[0].addresses[0] : '0';
                     events.push(heat_server_common_1.buildEventSend(address, heat_server_common_1.AssetTypes.NATIVE, '0', value, input.n));
                 }
-            });
+            }
         }
         if (isAccountBased) {
-            vout.forEach(output => {
+            for (const output of vout) {
                 if (heat_server_common_1.compareCaseInsensitive(output.addresses && output.addresses[0], addrXpub)) {
                     const address = vin[0].addresses ? vin[0].addresses[0] : '0';
                     events.push(heat_server_common_1.buildEventReceive(address, heat_server_common_1.AssetTypes.NATIVE, '0', output.value, output.n));
                 }
-            });
+            }
         }
         if (isAccountBased) {
-            tokenTransfers.forEach((transfer, index) => {
+            for (let index = 0; index < tokenTransfers.length; index++) {
+                const transfer = tokenTransfers[index];
                 if (heat_server_common_1.compareCaseInsensitive(transfer.from, addrXpub)) {
                     events.push(heat_server_common_1.buildEventSend(transfer.to, heat_server_common_1.AssetTypes.TOKEN_TYPE_1, transfer.token, transfer.value, index));
                 }
                 else {
                     events.push(heat_server_common_1.buildEventReceive(transfer.from, heat_server_common_1.AssetTypes.TOKEN_TYPE_1, transfer.token, transfer.value, index));
                 }
-            });
+            }
         }
         if (!isAccountBased) {
-            vin.forEach(input => {
+            for (const input of vin) {
                 const { addresses, value, n } = input;
                 const address = addresses ? addresses[0] || '' : '';
                 const _address = replaceAddrXpubWithOriginalAddrXpub(address, addrXpub, originalAddrXpub);
                 events.push(heat_server_common_1.buildEventInput(_address, heat_server_common_1.AssetTypes.NATIVE, '0', value, n));
-            });
+            }
         }
         if (!isAccountBased) {
-            vout.forEach(output => {
+            for (const output of vout) {
+                console.log('process output utxo', output);
                 let { addresses, value, n } = output;
                 const address = addresses ? addresses[0] || '' : '';
                 const _address = replaceAddrXpubWithOriginalAddrXpub(address, addrXpub, originalAddrXpub);
                 events.push(heat_server_common_1.buildEventOutput(_address, heat_server_common_1.AssetTypes.NATIVE, '0', value, n));
-            });
+            }
         }
         let outbound = !!vin.find(input => {
             const { addresses } = input;
