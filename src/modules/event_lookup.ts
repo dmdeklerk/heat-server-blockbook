@@ -1,6 +1,7 @@
 import { EventLookupParam, EventLookupResult, EventLookupEvent, tryParse, SourceTypes, CallContext, ModuleResponse, Blockchains, AssetTypes, MonitoredRequest, prettyPrint, compareCaseInsensitive, buildEventSend, buildEventReceive, buildEventInput, buildEventOutput, buildEventFee, createEventData } from 'heat-server-common'
-import { isString, isFunction, isNumber } from 'lodash';
+import { isFunction, isNumber } from 'lodash';
 import { tokenDiscovery } from './token_discovery'
+import { isUtxo } from '../blockchains'
 
 export async function eventLookup(context: CallContext, param: EventLookupParam): Promise<ModuleResponse<Array<EventLookupResult>>> {
   try {
@@ -60,6 +61,7 @@ export async function eventLookup(context: CallContext, param: EventLookupParam)
         for (let i = 0; i < data.transactions.length; i++) {
           let txData = data.transactions[i];
           let events = await getEventsFromTransaction(
+            blockchain,
             context,
             txData,
             addrXpub_,
@@ -189,6 +191,7 @@ async function getFilterIndexForContract(
  * }>
  */
 async function getEventsFromTransaction(
+  blockchain: Blockchains,
   context: CallContext,
   txData: BlockbookTxData,
   addrXpub: string,
@@ -202,11 +205,11 @@ async function getEventsFromTransaction(
     const value = txData.value || '0';
     const fees = txData.fees || '0';
     const events = [];
-    const isAccountBased = vin[0] && !isString(vin[0].hex);
+    const isAccountBased = !isUtxo(blockchain)
 
     // EVENT_SEND, NATIVE
     if (isAccountBased) {
-      vin.forEach(input => {
+      for (const input of vin) {
         if (
           compareCaseInsensitive(
             input.addresses && input.addresses[0],
@@ -219,11 +222,11 @@ async function getEventsFromTransaction(
             buildEventSend(address, AssetTypes.NATIVE, '0', value, input.n),
           );
         }
-      });
+      }
     }
     // EVENT_RECEIVE, NATIVE
     if (isAccountBased) {
-      vout.forEach(output => {
+      for (const output of vout) {
         if (
           compareCaseInsensitive(
             output.addresses && output.addresses[0],
@@ -240,12 +243,13 @@ async function getEventsFromTransaction(
               output.n,
             ),
           );
-        }
-      });
+        }        
+      }
     }
     // EVENT_SEND, EVENT_RECEIVE, TOKEN
     if (isAccountBased) {
-      tokenTransfers.forEach((transfer, index) => {
+      for (let index = 0; index<tokenTransfers.length; index++) {
+        const transfer = tokenTransfers[index]
         if (compareCaseInsensitive(transfer.from, addrXpub)) {
           events.push(
             buildEventSend(
@@ -268,11 +272,11 @@ async function getEventsFromTransaction(
             ),
           );
         }
-      });
+      }
     }
     // EVENT_INPUT
     if (!isAccountBased) {
-      vin.forEach(input => {
+      for (const input of vin) {
         const { addresses, value, n } = input;
         const address = addresses ? addresses[0] || '' : '';
         const _address = replaceAddrXpubWithOriginalAddrXpub(
@@ -283,11 +287,12 @@ async function getEventsFromTransaction(
         events.push(
           buildEventInput(_address, AssetTypes.NATIVE, '0', value, n),
         );
-      });
+      }
     }
     // EVENT_OUTPUT
     if (!isAccountBased) {
-      vout.forEach(output => {
+      for (const output of vout) {
+        console.log('process output utxo', output)
         let { addresses, value, n } = output;
         const address = addresses ? addresses[0] || '' : '';
         const _address = replaceAddrXpubWithOriginalAddrXpub(
@@ -298,7 +303,7 @@ async function getEventsFromTransaction(
         events.push(
           buildEventOutput(_address, AssetTypes.NATIVE, '0', value, n),
         );
-      });
+      }
     }
     // EVENT_FEE
     let outbound = !!vin.find(input => {

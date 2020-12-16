@@ -1,5 +1,4 @@
-import { Logger } from '@nestjs/common';
-import { MonitoredRequest, CallContext, ExplorerMiddleware } from 'heat-server-common';
+import { MonitoredRequest, CallContext, ExplorerMiddleware, createLogger } from 'heat-server-common';
 import * as chai from 'chai';
 const { isArray, isTrue, isString } = chai.assert
 
@@ -15,9 +14,15 @@ export const ethConfig = {
   host: 'eth1.heatwallet.com'
 }
 
+// bitcoin
+export const btcConfig = {
+  protocol: 'https',
+  host: 'btc1.heatwallet.com'
+}
+
 export function createContext(label?: string, middleWare?: ExplorerMiddleware, testConfig?: {protocol:string,host:string}): CallContext {
   let { host, protocol } = testConfig;
-  let logger = new Logger()
+  let logger = createLogger(label)
   let context: CallContext = {
     host,
     protocol,

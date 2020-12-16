@@ -1,9 +1,9 @@
 import * as chai from 'chai';
 const { isObject, isNumber, isString, isArray } = chai.assert
 import 'mocha';
-import { createContext, ethConfig, ltcConfig, isNonEmptyArrayOfUniqueStrings } from './test_config'
+import { createContext, ethConfig, ltcConfig, btcConfig, isNonEmptyArrayOfUniqueStrings } from './test_config'
 import { eventLookup } from '../src/modules/event_lookup';
-import { Blockchains, AssetTypes } from 'heat-server-common';
+import { Blockchains, AssetTypes, prettyPrint } from 'heat-server-common';
 
 describe('Event Lookup', () => {
   it('should work for ethereum native', async () => {
@@ -74,6 +74,29 @@ describe('Event Lookup', () => {
     isObject(respMinimal)
     isNonEmptyArrayOfUniqueStrings(respMinimal.value)
   });  
+
+  it('should work for bitcoin native', async () => {
+    const blockchain: Blockchains = Blockchains.BITCOIN
+    const assetType: AssetTypes = AssetTypes.NATIVE
+    const assetId: string = '0'
+    const addrXpub: string = 'bc1qw8yu4g2pefu7d0ty90f6w6yrusy0evsq0su7xc'
+    const from: number = 0
+    const to: number = 100
+    const minimal: boolean = false
+
+    const context = createContext('Event', {}, btcConfig)
+    const resp = await eventLookup(context, {
+      blockchain, assetType, assetId, addrXpub, from, to, minimal
+    })
+    testResponse(resp)    
+
+    // test minimal
+    const respMinimal = await eventLookup(context, {
+      blockchain, assetType, assetId, addrXpub, from, to, minimal:true
+    })    
+    isObject(respMinimal)
+    isNonEmptyArrayOfUniqueStrings(respMinimal.value)
+  });
 });
 
 function testResponse(resp) {
