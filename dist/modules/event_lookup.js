@@ -122,12 +122,18 @@ async function getEventsFromTransaction(blockchain, context, txData, addrXpub, o
         const fees = txData.fees || '0';
         const events = [];
         const isAccountBased = !blockchains_1.isUtxo(blockchain);
+        let specific;
+        if (blockchain == heat_server_common_1.Blockchains.ETHEREUM) {
+            if (txData.ethereumSpecific) {
+                specific = txData.ethereumSpecific;
+            }
+        }
         if (isAccountBased) {
             for (const input of vin) {
                 if (heat_server_common_1.compareCaseInsensitive(input.addresses && input.addresses[0], addrXpub) &&
                     value != '0') {
                     const address = vout[0].addresses ? vout[0].addresses[0] : '0';
-                    events.push(heat_server_common_1.buildEventSend(address, heat_server_common_1.AssetTypes.NATIVE, '0', value, input.n));
+                    events.push(heat_server_common_1.buildEventSend(address, heat_server_common_1.AssetTypes.NATIVE, '0', value, input.n, specific));
                 }
             }
         }
@@ -135,7 +141,7 @@ async function getEventsFromTransaction(blockchain, context, txData, addrXpub, o
             for (const output of vout) {
                 if (heat_server_common_1.compareCaseInsensitive(output.addresses && output.addresses[0], addrXpub)) {
                     const address = vin[0].addresses ? vin[0].addresses[0] : '0';
-                    events.push(heat_server_common_1.buildEventReceive(address, heat_server_common_1.AssetTypes.NATIVE, '0', output.value, output.n));
+                    events.push(heat_server_common_1.buildEventReceive(address, heat_server_common_1.AssetTypes.NATIVE, '0', output.value, output.n, specific));
                 }
             }
         }
@@ -143,10 +149,10 @@ async function getEventsFromTransaction(blockchain, context, txData, addrXpub, o
             for (let index = 0; index < tokenTransfers.length; index++) {
                 const transfer = tokenTransfers[index];
                 if (heat_server_common_1.compareCaseInsensitive(transfer.from, addrXpub)) {
-                    events.push(heat_server_common_1.buildEventSend(transfer.to, heat_server_common_1.AssetTypes.TOKEN_TYPE_1, transfer.token, transfer.value, index));
+                    events.push(heat_server_common_1.buildEventSend(transfer.to, heat_server_common_1.AssetTypes.TOKEN_TYPE_1, transfer.token, transfer.value, index, specific));
                 }
                 else {
-                    events.push(heat_server_common_1.buildEventReceive(transfer.from, heat_server_common_1.AssetTypes.TOKEN_TYPE_1, transfer.token, transfer.value, index));
+                    events.push(heat_server_common_1.buildEventReceive(transfer.from, heat_server_common_1.AssetTypes.TOKEN_TYPE_1, transfer.token, transfer.value, index, specific));
                 }
             }
         }
@@ -155,7 +161,7 @@ async function getEventsFromTransaction(blockchain, context, txData, addrXpub, o
                 const { addresses, value, n } = input;
                 const address = addresses ? addresses[0] || '' : '';
                 const _address = replaceAddrXpubWithOriginalAddrXpub(address, addrXpub, originalAddrXpub);
-                events.push(heat_server_common_1.buildEventInput(_address, heat_server_common_1.AssetTypes.NATIVE, '0', value, n));
+                events.push(heat_server_common_1.buildEventInput(_address, heat_server_common_1.AssetTypes.NATIVE, '0', value, n, specific));
             }
         }
         if (!isAccountBased) {
@@ -164,7 +170,7 @@ async function getEventsFromTransaction(blockchain, context, txData, addrXpub, o
                 let { addresses, value, n } = output;
                 const address = addresses ? addresses[0] || '' : '';
                 const _address = replaceAddrXpubWithOriginalAddrXpub(address, addrXpub, originalAddrXpub);
-                events.push(heat_server_common_1.buildEventOutput(_address, heat_server_common_1.AssetTypes.NATIVE, '0', value, n));
+                events.push(heat_server_common_1.buildEventOutput(_address, heat_server_common_1.AssetTypes.NATIVE, '0', value, n, specific));
             }
         }
         let outbound = !!vin.find(input => {

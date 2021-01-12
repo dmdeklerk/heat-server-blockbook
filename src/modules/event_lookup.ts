@@ -197,8 +197,8 @@ async function getEventsFromTransaction(
   addrXpub: string,
   originalAddrXpub: string,
 ) {
-  const { logger } = context  
-  try {    
+  const { logger } = context
+  try {
     const vin = txData.vin || [];
     const vout = txData.vout || [];
     const tokenTransfers = txData.tokenTransfers || [];
@@ -206,6 +206,13 @@ async function getEventsFromTransaction(
     const fees = txData.fees || '0';
     const events = [];
     const isAccountBased = !isUtxo(blockchain)
+
+    let specific: any;
+    if (blockchain == Blockchains.ETHEREUM) {
+      if (txData.ethereumSpecific) {
+        specific = txData.ethereumSpecific;
+      }
+    }
 
     // EVENT_SEND, NATIVE
     if (isAccountBased) {
@@ -219,7 +226,7 @@ async function getEventsFromTransaction(
         ) {
           const address = vout[0].addresses ? vout[0].addresses[0] : '0';
           events.push(
-            buildEventSend(address, AssetTypes.NATIVE, '0', value, input.n),
+            buildEventSend(address, AssetTypes.NATIVE, '0', value, input.n, specific),
           );
         }
       }
@@ -241,14 +248,15 @@ async function getEventsFromTransaction(
               '0',
               output.value,
               output.n,
+              specific,
             ),
           );
-        }        
+        }
       }
     }
     // EVENT_SEND, EVENT_RECEIVE, TOKEN
     if (isAccountBased) {
-      for (let index = 0; index<tokenTransfers.length; index++) {
+      for (let index = 0; index < tokenTransfers.length; index++) {
         const transfer = tokenTransfers[index]
         if (compareCaseInsensitive(transfer.from, addrXpub)) {
           events.push(
@@ -258,6 +266,7 @@ async function getEventsFromTransaction(
               transfer.token,
               transfer.value,
               index,
+              specific,
             ),
           );
         } else {
@@ -269,6 +278,7 @@ async function getEventsFromTransaction(
               transfer.token,
               transfer.value,
               index,
+              specific,
             ),
           );
         }
@@ -285,7 +295,7 @@ async function getEventsFromTransaction(
           originalAddrXpub,
         );
         events.push(
-          buildEventInput(_address, AssetTypes.NATIVE, '0', value, n),
+          buildEventInput(_address, AssetTypes.NATIVE, '0', value, n, specific,),
         );
       }
     }
@@ -301,7 +311,7 @@ async function getEventsFromTransaction(
           originalAddrXpub,
         );
         events.push(
-          buildEventOutput(_address, AssetTypes.NATIVE, '0', value, n),
+          buildEventOutput(_address, AssetTypes.NATIVE, '0', value, n, specific,),
         );
       }
     }

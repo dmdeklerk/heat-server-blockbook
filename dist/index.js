@@ -16,14 +16,15 @@ const bitcoinjs_lib_1 = require("bitcoinjs-lib");
 const bchaddrjs_1 = require("bchaddrjs");
 __exportStar(require("./explorer"), exports);
 const WEI = new big_js_1.default(10).pow(18);
-exports.BLOCKBOOK_ETH_NETWORK_FEE = function (input) {
+const BLOCKBOOK_ETH_NETWORK_FEE = function (input) {
     console.log(`WEI = ${WEI}`);
     return {
         gasPriceWei: new big_js_1.default(input).times(WEI).toString(),
     };
 };
+exports.BLOCKBOOK_ETH_NETWORK_FEE = BLOCKBOOK_ETH_NETWORK_FEE;
 const SATOSHI = new big_js_1.default(10).pow(8);
-exports.BLOCKBOOK_UTXO_NETWORK_FEE = function (input) {
+const BLOCKBOOK_UTXO_NETWORK_FEE = function (input) {
     console.log(`SATOSHI = ${SATOSHI}, input = ${input}`);
     return {
         satByte: new big_js_1.default(input)
@@ -33,7 +34,8 @@ exports.BLOCKBOOK_UTXO_NETWORK_FEE = function (input) {
             .toString(),
     };
 };
-exports.BLOCKBOOK_LTC_GETADDRESS = function (address) {
+exports.BLOCKBOOK_UTXO_NETWORK_FEE = BLOCKBOOK_UTXO_NETWORK_FEE;
+const BLOCKBOOK_LTC_GETADDRESS = function (address) {
     try {
         if ((address || '').startsWith('M'))
             return address;
@@ -46,7 +48,8 @@ exports.BLOCKBOOK_LTC_GETADDRESS = function (address) {
     }
     return address;
 };
-exports.BLOCKBOOK_BCH_SERVER = function (address) {
+exports.BLOCKBOOK_LTC_GETADDRESS = BLOCKBOOK_LTC_GETADDRESS;
+const BLOCKBOOK_BCH_SERVER = function (address) {
     try {
         return bchaddrjs_1.toCashAddress(address);
     }
@@ -55,4 +58,5 @@ exports.BLOCKBOOK_BCH_SERVER = function (address) {
     }
     return address;
 };
+exports.BLOCKBOOK_BCH_SERVER = BLOCKBOOK_BCH_SERVER;
 //# sourceMappingURL=index.js.map
