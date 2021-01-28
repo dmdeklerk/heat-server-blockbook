@@ -9,6 +9,7 @@ const network_status_1 = require("./modules/network_status");
 const token_discovery_1 = require("./modules/token_discovery");
 const transaction_status_1 = require("./modules/transaction_status");
 const utxo_lookup_1 = require("./modules/utxo_lookup");
+const nonce_lookup_1 = require("./modules/nonce_lookup");
 const broadcast_1 = require("./modules/broadcast");
 const ID = "blockbook";
 const modules = {
@@ -20,6 +21,7 @@ const modules = {
     tokenDiscovery: token_discovery_1.tokenDiscovery,
     transactionStatus: transaction_status_1.transactionStatus,
     utxoLookup: utxo_lookup_1.utxoLookup,
+    nonceLookup: nonce_lookup_1.nonceLookup,
 };
 class Explorer extends heat_server_common_1.ExplorerBase {
     constructor(protocol, host, rateLimiter, apiKey, middleWare) {

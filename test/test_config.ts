@@ -8,6 +8,12 @@ export const ltcConfig = {
   host: 'ltc1.heatwallet.com'
 }
 
+// bitcoin cash
+export const bchConfig = {
+  protocol: 'https',
+  host: 'bch1.heatwallet.com'
+}
+
 // ethereum
 export const ethConfig = {
   protocol: 'https',

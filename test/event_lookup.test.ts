@@ -29,74 +29,74 @@ describe('Event Lookup', () => {
     isNonEmptyArrayOfUniqueStrings(respMinimal.value)    
   });
 
-  it('should work for ethereum erc20', async () => {
-    const blockchain: Blockchains = Blockchains.ETHEREUM
-    const assetType: AssetTypes = AssetTypes.TOKEN_TYPE_1
-    const assetId: string = '0x45245bc59219eeaaf6cd3f382e078a461ff9de7b'
-    const addrXpub: string = '0x0F33a461848dFb9DE84cddD721ef560f3326634E'
-    const from: number = 0
-    const to: number = 100
-    const minimal: boolean = false
+  // it('should work for ethereum erc20', async () => {
+  //   const blockchain: Blockchains = Blockchains.ETHEREUM
+  //   const assetType: AssetTypes = AssetTypes.TOKEN_TYPE_1
+  //   const assetId: string = '0x45245bc59219eeaaf6cd3f382e078a461ff9de7b'
+  //   const addrXpub: string = '0x0F33a461848dFb9DE84cddD721ef560f3326634E'
+  //   const from: number = 0
+  //   const to: number = 100
+  //   const minimal: boolean = false
 
-    const context = createContext('Event', {}, ethConfig)
-    const resp = await eventLookup(context, {
-      blockchain, assetType, assetId, addrXpub, from, to, minimal
-    })
-    testResponse(resp)
+  //   const context = createContext('Event', {}, ethConfig)
+  //   const resp = await eventLookup(context, {
+  //     blockchain, assetType, assetId, addrXpub, from, to, minimal
+  //   })
+  //   testResponse(resp)
 
-    // test minimal
-    const respMinimal = await eventLookup(context, {
-      blockchain, assetType, assetId, addrXpub, from, to, minimal:true
-    })    
-    isObject(respMinimal)
-    isNonEmptyArrayOfUniqueStrings(respMinimal.value)    
-  });  
+  //   // test minimal
+  //   const respMinimal = await eventLookup(context, {
+  //     blockchain, assetType, assetId, addrXpub, from, to, minimal:true
+  //   })    
+  //   isObject(respMinimal)
+  //   isNonEmptyArrayOfUniqueStrings(respMinimal.value)    
+  // });  
 
-  it('should work for litecoin native', async () => {
-    const blockchain: Blockchains = Blockchains.LITECOIN
-    const assetType: AssetTypes = AssetTypes.NATIVE
-    const assetId: string = '0'
-    const addrXpub: string = 'LTftqUCs7KF7d3iu9QfNU7u2Fc3bxtr6Ug'
-    const from: number = 0
-    const to: number = 100
-    const minimal: boolean = false
+  // it('should work for litecoin native', async () => {
+  //   const blockchain: Blockchains = Blockchains.LITECOIN
+  //   const assetType: AssetTypes = AssetTypes.NATIVE
+  //   const assetId: string = '0'
+  //   const addrXpub: string = 'LTftqUCs7KF7d3iu9QfNU7u2Fc3bxtr6Ug'
+  //   const from: number = 0
+  //   const to: number = 100
+  //   const minimal: boolean = false
 
-    const context = createContext('Event', {}, ltcConfig)
-    const resp = await eventLookup(context, {
-      blockchain, assetType, assetId, addrXpub, from, to, minimal
-    })
-    testResponse(resp)
+  //   const context = createContext('Event', {}, ltcConfig)
+  //   const resp = await eventLookup(context, {
+  //     blockchain, assetType, assetId, addrXpub, from, to, minimal
+  //   })
+  //   testResponse(resp)
 
-    // test minimal
-    const respMinimal = await eventLookup(context, {
-      blockchain, assetType, assetId, addrXpub, from, to, minimal:true
-    })    
-    isObject(respMinimal)
-    isNonEmptyArrayOfUniqueStrings(respMinimal.value)
-  });  
+  //   // test minimal
+  //   const respMinimal = await eventLookup(context, {
+  //     blockchain, assetType, assetId, addrXpub, from, to, minimal:true
+  //   })    
+  //   isObject(respMinimal)
+  //   isNonEmptyArrayOfUniqueStrings(respMinimal.value)
+  // });  
 
-  it('should work for bitcoin native', async () => {
-    const blockchain: Blockchains = Blockchains.BITCOIN
-    const assetType: AssetTypes = AssetTypes.NATIVE
-    const assetId: string = '0'
-    const addrXpub: string = 'bc1qw8yu4g2pefu7d0ty90f6w6yrusy0evsq0su7xc'
-    const from: number = 0
-    const to: number = 100
-    const minimal: boolean = false
+  // it('should work for bitcoin native', async () => {
+  //   const blockchain: Blockchains = Blockchains.BITCOIN
+  //   const assetType: AssetTypes = AssetTypes.NATIVE
+  //   const assetId: string = '0'
+  //   const addrXpub: string = 'bc1qw8yu4g2pefu7d0ty90f6w6yrusy0evsq0su7xc'
+  //   const from: number = 0
+  //   const to: number = 100
+  //   const minimal: boolean = false
 
-    const context = createContext('Event', {}, btcConfig)
-    const resp = await eventLookup(context, {
-      blockchain, assetType, assetId, addrXpub, from, to, minimal
-    })
-    testResponse(resp)    
+  //   const context = createContext('Event', {}, btcConfig)
+  //   const resp = await eventLookup(context, {
+  //     blockchain, assetType, assetId, addrXpub, from, to, minimal
+  //   })
+  //   testResponse(resp)    
 
-    // test minimal
-    const respMinimal = await eventLookup(context, {
-      blockchain, assetType, assetId, addrXpub, from, to, minimal:true
-    })    
-    isObject(respMinimal)
-    isNonEmptyArrayOfUniqueStrings(respMinimal.value)
-  });
+  //   // test minimal
+  //   const respMinimal = await eventLookup(context, {
+  //     blockchain, assetType, assetId, addrXpub, from, to, minimal:true
+  //   })    
+  //   isObject(respMinimal)
+  //   isNonEmptyArrayOfUniqueStrings(respMinimal.value)
+  // });
 });
 
 function testResponse(resp) {

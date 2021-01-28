@@ -6,6 +6,7 @@ import { networkStatus } from './modules/network_status';
 import { tokenDiscovery } from './modules/token_discovery'
 import { transactionStatus } from './modules/transaction_status'
 import { utxoLookup } from './modules/utxo_lookup'
+import { nonceLookup } from './modules/nonce_lookup'
 import { broadcast } from './modules/broadcast'
 import { ModuleProvider } from 'heat-server-common/dist/types/module_provider.interface';
 
@@ -24,6 +25,7 @@ const modules: ModuleProvider = {
   tokenDiscovery,
   transactionStatus,
   utxoLookup,
+  nonceLookup,
 }
 
 /* ------------------- Configuration End --------------------- */
