@@ -1,6 +1,15 @@
 import Big from 'big.js';
 import { address as bitcoinAddress } from 'bitcoinjs-lib';
 import { toCashAddress } from 'bchaddrjs';
+import { MonitoredRequest } from 'heat-server-common';
+
+MonitoredRequest.defaultGetOptions = {
+  withCredentials:true,
+  headers: { 
+    'X-Requested-With': 'XMLHttpRequest',
+    'User-Agent': 'curl/7.64.1' 
+  },
+}
 
 export * from './explorer'
 

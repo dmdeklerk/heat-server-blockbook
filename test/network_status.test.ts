@@ -3,7 +3,7 @@ const { isObject, isTrue, isNumber, isString } = chai.assert
 import 'mocha';
 import { createContext, ethConfig, ltcConfig } from './test_config'
 import { networkStatus } from '../src/modules/network_status';
-import { Blockchains } from 'heat-server-common';
+import { Blockchains, MonitoredRequest } from 'heat-server-common';
 
 describe('Network Status', () => {
   it('should work for ethereum', async () => {

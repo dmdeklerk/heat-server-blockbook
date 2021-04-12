@@ -2,28 +2,52 @@ import { MonitoredRequest, CallContext, ExplorerMiddleware, createLogger } from 
 import * as chai from 'chai';
 const { isArray, isTrue, isString } = chai.assert
 
+// // litecoin
+// export const ltcConfig = {
+//   protocol: 'https',
+//   host: 'ltc1.heatwallet.com'
+// }
+
+// // bitcoin cash
+// export const bchConfig = {
+//   protocol: 'https',
+//   host: 'bch1.heatwallet.com'
+// }
+
+// // ethereum
+// export const ethConfig = {
+//   protocol: 'https',
+//   host: 'eth1.heatwallet.com'
+// }
+
+// // bitcoin
+// export const btcConfig = {
+//   protocol: 'https',
+//   host: 'btc1.heatwallet.com'
+// }
+
 // litecoin
 export const ltcConfig = {
   protocol: 'https',
-  host: 'ltc1.heatwallet.com'
+  host: 'ltc1.trezor.io'
 }
 
 // bitcoin cash
 export const bchConfig = {
   protocol: 'https',
-  host: 'bch1.heatwallet.com'
+  host: 'bch1.trezor.io'
 }
 
 // ethereum
 export const ethConfig = {
   protocol: 'https',
-  host: 'eth1.heatwallet.com'
+  host: 'eth1.trezor.io'
 }
 
 // bitcoin
 export const btcConfig = {
   protocol: 'https',
-  host: 'btc1.heatwallet.com'
+  host: 'btc1.trezor.io'
 }
 
 export function createContext(label?: string, middleWare?: ExplorerMiddleware, testConfig?: {protocol:string,host:string}): CallContext {

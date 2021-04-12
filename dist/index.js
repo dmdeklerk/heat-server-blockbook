@@ -14,6 +14,14 @@ exports.BLOCKBOOK_BCH_SERVER = exports.BLOCKBOOK_LTC_GETADDRESS = exports.BLOCKB
 const big_js_1 = require("big.js");
 const bitcoinjs_lib_1 = require("bitcoinjs-lib");
 const bchaddrjs_1 = require("bchaddrjs");
+const heat_server_common_1 = require("heat-server-common");
+heat_server_common_1.MonitoredRequest.defaultGetOptions = {
+    withCredentials: true,
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'User-Agent': 'curl/7.64.1'
+    },
+};
 __exportStar(require("./explorer"), exports);
 const WEI = new big_js_1.default(10).pow(18);
 const BLOCKBOOK_ETH_NETWORK_FEE = function (input) {
